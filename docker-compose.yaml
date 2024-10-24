@@ -1,0 +1,37 @@
+services:
+  server:
+    build:
+      context: .
+      # args:
+      #   GOOSE_DRIVER: ${GOOSE_DRIVER}
+      #   GOOSE_DBSTRING: ${GOOSE_DBSTRING}
+      #   GOOSE_MIGRATION_DIR: ${GOOSE_MIGRATION_DIR}
+    ports:
+    - 8080:8080
+    depends_on:
+    - db
+    networks:
+      - app-net
+    env_file: ".env"
+    volumes:
+      - ./:/app/
+  db:
+    image: postgres:alpine
+    ports:
+    - 5431:5432
+    networks:
+      - app-net
+    volumes:
+      - db-store:/app/db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PORT: 5431
+      POSTGRES_HOST: db
+
+volumes:
+  db-store:
+networks:
+  app-net:
+    driver: bridge

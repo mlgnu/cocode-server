@@ -1,0 +1,22 @@
+version: "2"
+sql:
+- name: "user_db"
+  schema: "./migration/20240811104504_create_user.sql"
+  queries: "./internal/user/repository.sql"
+  engine: "postgresql"
+  gen:
+    go:
+      package: "userrepo"
+      out: "./internal/user/repository"
+      sql_package: "pgx/v5"
+      emit_json_tags: true
+- name: "auth_db"
+  schema: "./migration/20240811104504_create_user.sql"
+  queries: "./internal/auth/repository.sql"
+  engine: "postgresql"
+  gen:
+    go:
+      package: "authrepo"
+      out: "./internal/auth/repository"
+      sql_package: "pgx/v5"
+      emit_json_tags: true
